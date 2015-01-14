@@ -1,4 +1,5 @@
 import json
+import os
 
 from gevent import monkey
 monkey.patch_all()
@@ -82,7 +83,7 @@ def index():
     return render_template('index.html')
 
 WebSocketServer(
-    ('0.0.0.0', 8000),
+    ('0.0.0.0', port = int(os.environ.get('PORT', 8000))),
 
     Resource({
         '^/chat': BackendApplication,
