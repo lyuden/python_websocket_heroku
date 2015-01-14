@@ -1,0 +1,64 @@
+<html>
+    <head>
+
+
+    </head>
+    <body>
+
+        <div id="dem">
+
+            test
+        </div>
+
+
+
+        <script src='https://code.jquery.com/jquery-2.1.3.min.js'>
+        </script>
+
+        <script>
+          var exampleWebsocket = new WebSocket('ws://localhost:8000/chat/')
+
+          var exampleWebsocket2 = new WebSocket('ws://localhost:8000/chat/')
+
+        </script>
+        <script>
+
+          exampleWebsocket.onopen = function(){
+          console.log('opened w1');
+          exampleWebsocket2.onopen = function(){
+
+          console.log('opened w2');
+          exampleWebsocket.onmessage = function(m) { console.log("Message to socket 1", m.data);};
+
+          var login_message = { type: 'auth',
+                            login: 'demo_user'};
+
+          exampleWebsocket.send(JSON.stringify(login_message));
+
+
+
+          exampleWebsocket2.onmessage = function(m) { console.log("Message to socket 2", m.data);};
+
+          login_message.login = 'user2'
+
+          exampleWebsocket2.send(JSON.stringify(login_message))
+
+          var add_group_message = { type: 'add_group',
+                                group: 'demo_user'};
+
+          exampleWebsocket2.send(JSON.stringify(add_group_message));
+
+
+          var message_to_demo = {type: 'message',
+                             group: 'demo_user',
+                             data : 'something to say'
+          }
+
+
+          exampleWebsocket.send(JSON.stringify(message_to_demo));
+
+          }}
+
+        </script>
+    </body>
+</html>
