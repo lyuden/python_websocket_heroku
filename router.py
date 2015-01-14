@@ -22,6 +22,7 @@ class BackendApplication(WebSocketApplication):
 
     groups = defaultdict(list)
     authorized_users = {}
+    games = []
 
     def on_open(self):
         print "Some client connected!"
@@ -35,7 +36,9 @@ class BackendApplication(WebSocketApplication):
         if message['type'] == 'auth':
             self.authorized_users[self.ws.handler.active_client] = message['login']
 
-            self.ws.handler.active_client.ws.send(json.dumps({'free':
+            self.ws.handler.active_client.ws.send(json.dumps({'type': 'group_info',
+
+'free':
                                                            [group for group in self.groups if len(self.groups[group])==1 ], 'user_groups':
                                                            [group for group in self.groups if self.ws.handler.active_client in self.groups[group]]
 
@@ -45,9 +48,12 @@ class BackendApplication(WebSocketApplication):
             return
         elif message['type'] == 'message':
             self.broadcast(message)
-
+        elif message['type'] == 'game_start':
+            self.games.append(message['group'])
+        elif message['type'] == 'game_stop':
+           self.games.remove(message['group'])
         elif message['type'] == 'add_group':
-            if len(self.groups[message['group']]) < 4:
+            if len(self.groups[message['group']])< 4 and  not (message['group'] in self.games):
                 self.groups[message['group']].append(self.ws.handler.active_client)
                 print "Added user to group {}".format(message['group'])
             else:
