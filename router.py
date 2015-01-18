@@ -31,7 +31,7 @@ class BackendApplication(WebSocketApplication):
         for client in self.ws.handler.server.clients.values():
             client.ws.send(json.dumps({'type': 'group_info',
 
-                                       'free':[group for group in self.groups if not group in games ],
+                                       'free':[group for group in self.groups if not group in self.games ],
                                        'user_groups':  [group for group in self.groups if client in self.groups[group]]
 
                                                        }))
