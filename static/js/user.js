@@ -4,7 +4,7 @@ var user = user || {
     View: {}
 }
 user.Collection = Backbone.Collection.extend({
-    model: Model
+    model: user.Model
 });
 user.Model = Backbone.Model.extend({
     initialize: function() {
