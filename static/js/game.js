@@ -4,7 +4,7 @@ var game = game || {
     View: {}
 }
 game.Collection = Backbone.Collection.extend({
-    model: Model
+    model: game.Model
 });
 game.Model = Backbone.Model.extend({
     initialize: function() {
